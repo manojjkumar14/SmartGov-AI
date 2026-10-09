@@ -1,4 +1,4 @@
-@'
+
 {
   "files": [],
   "references": [
@@ -6,4 +6,3 @@
     { "path": "./tsconfig.node.json" }
   ]
 }
-'@ | Set-Content -Encoding ascii tsconfig.json
