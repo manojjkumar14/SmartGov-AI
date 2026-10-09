@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/static/img/signup-illustration.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartGov AI | Login</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/static/dist/assets/login-A1Kw-IqM.js"></script>
+    <link rel="modulepreload" crossorigin href="/static/dist/assets/button-Dqm148B7.js">
+    <link rel="stylesheet" crossorigin href="/static/dist/assets/button-Cr2dyzX4.css">
+  </head>
+  <body>
+    <!-- Flask Jinja error holder -->
+    {% if error %}
+    <div id="login-error-message" data-error="{{ error }}"></div>
+    {% endif %}
+
+    <div id="root"></div>
+  </body>
+</html>

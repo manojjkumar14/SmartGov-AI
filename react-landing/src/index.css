@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@theme {
+  --color-border: #E2E8F0;
+  --color-input: #E2E8F0;
+  --color-ring: #168A5A;
+  --color-background: #F7F9F8;
+  --color-foreground: #0F172A;
+  
+  --color-primary: #168A5A;
+  --color-primary-foreground: #FFFFFF;
+  --color-primary-dark: #0B5D3B;
+  
+  --color-secondary: #0B5D3B;
+  --color-secondary-foreground: #FFFFFF;
+  
+  --color-accent: #F4B400;
+  --color-accent-foreground: #0F172A;
+  
+  --color-navy: #0F172A;
+  --color-navy-dark: #020617;
+  
+  --color-muted: #F1F5F9;
+  --color-muted-foreground: #64748B;
+  
+  --color-card: #FFFFFF;
+  --color-card-foreground: #0F172A;
+
+  --color-sidebar: #FFFFFF;
+  --color-sidebar-foreground: #0F172A;
+  --color-sidebar-primary: #168A5A;
+  --color-sidebar-primary-foreground: #FFFFFF;
+  --color-sidebar-accent: #F1F5F9;
+  --color-sidebar-accent-foreground: #0F172A;
+  --color-sidebar-border: #E5E7EB;
+  --color-sidebar-ring: #168A5A;
+  
+  --radius-lg: 0.75rem;
+  --radius-md: calc(0.75rem - 2px);
+  --radius-sm: calc(0.75rem - 4px);
+  
+  --animate-pulse-slow: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.85;
+    }
+  }
+}
+
+@utility text-xxs {
+  font-size: 0.65rem;
+  line-height: 1rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary/20;
+    font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}

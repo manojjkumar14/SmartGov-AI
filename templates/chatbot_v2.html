@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartGov AI</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="main-container">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <div class="sidebar">
+
+        <div>
+
+            <h2 class="logo">
+                🇮🇳 SmartGov AI
+            </h2>
+
+            <hr>
+
+            <a href="/chatbot" class="menu-btn active">
+                <i class="fa-solid fa-house"></i>
+                Home
+            </a>
+
+            <a href="/history" class="menu-btn">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                Chat History
+            </a>
+
+            <h5 class="mt-4 mb-3">
+                Quick Search
+            </h5>
+
+            <button class="quick-btn"
+                onclick="quickSearch('Government scholarship schemes for students')">
+                🎓 Students
+            </button>
+
+            <button class="quick-btn"
+                onclick="quickSearch('Government schemes for farmers')">
+                👨‍🌾 Farmers
+            </button>
+
+            <button class="quick-btn"
+                onclick="quickSearch('Government schemes for women')">
+                👩 Women
+            </button>
+
+            <button class="quick-btn"
+                onclick="quickSearch('Government health schemes')">
+                🏥 Health
+            </button>
+
+            <button class="quick-btn"
+                onclick="quickSearch('Startup India scheme')">
+                💼 Startup
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- ================= RIGHT SIDE ================= -->
+
+    <div class="chat-section">
+
+        <!-- Header -->
+
+        <div class="chat-header">
+
+            <div>
+
+                <h2>
+                    🤖 SmartGov AI Assistant
+                </h2>
+
+            </div>
+
+            <div class="header-right">
+
+                <span class="user-email">
+
+                    👤 {{ email }}
+
+                </span>
+
+                <a href="/logout"
+                    class="btn btn-light">
+
+                    Logout
+
+                </a>
+
+            </div>
+
+        </div>
+        <!-- ================= CHAT AREA ================= -->
+
+<div id="chatBox" class="chat-box">
+
+    <!-- Welcome Screen -->
+
+    <div class="welcome-screen">
+
+        <h1>🤖 SmartGov AI</h1>
+
+        <p>
+            Ask anything about Government Schemes in India
+        </p>
+
+        <div class="welcome-buttons">
+
+            <button
+                onclick="quickSearch('Government scholarship schemes')"
+                class="welcome-btn">
+
+                🎓 Scholarships
+
+            </button>
+
+            <button
+                onclick="quickSearch('Government schemes for farmers')"
+                class="welcome-btn">
+
+                👨‍🌾 Farmers
+
+            </button>
+
+            <button
+                onclick="quickSearch('Government health schemes')"
+                class="welcome-btn">
+
+                🏥 Health
+
+            </button>
+
+            <button
+                onclick="quickSearch('Startup India scheme')"
+                class="welcome-btn">
+
+                💼 Startup India
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= INPUT AREA ================= -->
+
+<div class="input-area">
+
+    <div class="input-wrapper">
+
+        <input
+            id="userInput"
+            type="text"
+            placeholder="Ask SmartGov AI anything..."
+            autocomplete="off">
+
+        <button
+            id="sendBtn"
+            onclick="sendMessage()">
+
+            <i class="fa-solid fa-paper-plane"></i>
+
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+<!-- chat-section -->
+
+</div>
+<!-- main-container -->
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+
+let lastQuestion = "";
+
+async function sendMessage(regenerate = false){
+
+    let input = document.getElementById("userInput");
+let message = input.value.trim();
+
+if(message=="") return;
+
+lastQuestion = message;
+
+    let chat = document.getElementById("chatBox");
+
+    // Remove welcome screen after first message
+    let welcome = document.querySelector(".welcome-screen");
+    if(welcome){
+        welcome.remove();
+    }
+
+    // User Message
+    if(!regenerate){
+
+chat.innerHTML += `
+<div class="user-row">
+
+    <div class="user-message">
+
+        ${message}
+
+    </div>
+
+</div>
+`;
+
+}
+
+    input.value="";
+
+    // Typing Animation
+    chat.innerHTML += `
+    <div class="bot-row" id="typingRow">
+
+        <div class="bot-message">
+
+            <b>🤖 SmartGov AI</b>
+
+            <div class="typing">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </div>
+
+        </div>
+
+    </div>
+    `;
+
+    chat.scrollTop = chat.scrollHeight;
+
+    try{
+
+        const response = await fetch("/ask",{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+                message:message
+            })
+
+        });
+
+        const data = await response.json();
+
+        document.getElementById("typingRow").remove();
+
+        chat.innerHTML += `
+<div class="bot-row">
+
+    <div class="bot-message ai-message">
+
+        ${marked.parse(data.answer)}
+
+        <div class="message-actions mt-3">
+
+    <div class="message-actions mt-3">
+
+    <button class="action-btn"
+        onclick="copyText(this)">
+        📋 Copy
+    </button>
+
+    <button class="action-btn"
+        onclick="regenerateAnswer()">
+        🔄 Regenerate
+    </button>
+
+    <button class="action-btn like-btn"
+        onclick="likeMessage(this)">
+        👍
+    </button>
+
+    <button class="action-btn dislike-btn"
+        onclick="dislikeMessage(this)">
+        👎
+    </button>
+
+</div>
+
+    </div>
+
+</div>
+`;
+
+        chat.scrollTop = chat.scrollHeight;
+
+    }
+
+    catch(error){
+
+        document.getElementById("typingRow").remove();
+
+        chat.innerHTML += `
+        <div class="bot-row">
+
+            <div class="bot-message">
+
+                ❌ Unable to connect to server.
+
+            </div>
+
+        </div>
+        `;
+
+    }
+
+}
+
+// Enter Key
+
+document.getElementById("userInput").addEventListener("keypress",function(e){
+
+    if(e.key==="Enter"){
+
+        sendMessage();
+
+    }
+
+});
+
+// Quick Search
+
+function quickSearch(text){
+
+    document.getElementById("userInput").value=text;
+
+    sendMessage();
+
+}
+
+// Auto Focus
+
+window.onload=function(){
+
+    document.getElementById("userInput").focus();
+
+}
+
+function copyText(button){
+
+    let text = button.parentElement.parentElement.innerText;
+
+    navigator.clipboard.writeText(text);
+
+    button.innerHTML="✅ Copied";
+
+    setTimeout(function(){
+
+        button.innerHTML="📋 Copy";
+
+    },2000);
+
+}
+function likeMessage(button){
+
+    button.innerHTML="❤️";
+
+    button.style.background="#28a745";
+
+    button.nextElementSibling.style.background="#e9ecef";
+    button.nextElementSibling.innerHTML="👎";
+
+}
+
+function dislikeMessage(button){
+
+    button.innerHTML="💔";
+
+    button.style.background="#dc3545";
+
+    button.previousElementSibling.style.background="#e9ecef";
+    button.previousElementSibling.innerHTML="👍";
+
+}
+async function regenerateAnswer(){
+
+    if(lastQuestion=="") return;
+
+    document.getElementById("userInput").value = lastQuestion;
+
+    sendMessage(true);
+
+}
+</script>
+
+</body>
+</html>
