@@ -1,4 +1,4 @@
-@'
+
 {
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
@@ -24,4 +24,3 @@
   },
   "include": ["src"]
 }
-'@ | Set-Content -Encoding utf8 tsconfig.app.json
