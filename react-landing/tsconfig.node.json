@@ -1,4 +1,4 @@
-@'
+
 {
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
@@ -15,4 +15,3 @@
   },
   "include": ["vite.config.ts"]
 }
-'@ | Set-Content -Encoding utf8 tsconfig.node.json
