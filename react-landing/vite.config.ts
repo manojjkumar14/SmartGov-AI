@@ -14,4 +14,4 @@ export default defineConfig({
     },
   },
 })
-'@ | Set-Content -Encoding utf8 vite.config.ts
+'@ | Set-Content -Encoding ascii vite.config.ts
