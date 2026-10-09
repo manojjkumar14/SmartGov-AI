@@ -6,4 +6,4 @@
     { "path": "./tsconfig.node.json" }
   ]
 }
-'@ | Set-Content -Encoding utf8 tsconfig.json
+'@ | Set-Content -Encoding ascii tsconfig.json
